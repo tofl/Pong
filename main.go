@@ -34,10 +34,10 @@ var (
 	lastRoundTime     time.Time
 )
 
-//go:embed retro-gaming.ttf
+//go:embed assets/retro-gaming.ttf
 var retroGamingFontBytes []byte
 
-//go:embed pong-score.ttf
+//go:embed assets/pong-score.ttf
 var pongScoreFontBytes []byte
 
 // Text as displayed in the game
