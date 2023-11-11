@@ -26,6 +26,7 @@ var (
 	mainTitleFontFace font.Face
 	subtitleFontFace  font.Face
 	textBodyFontFace  font.Face
+	pongScoreFontFace font.Face
 	gameStage         int8
 	player1           Player
 	player2           Player
@@ -415,11 +416,7 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return screenWidth, screenHeight
 }
 
-func main() {
-	ebiten.SetWindowSize(screenWidth*2, screenHeight*2)
-	ebiten.SetWindowTitle(gameTitle)
-
-	// Load fonts
+func initializeFonts() {
 	textFont, err := truetype.Parse(retroGamingFontBytes)
 	if err != nil {
 		log.Fatal(err)
@@ -446,15 +443,13 @@ func main() {
 		DPI:  72,
 	})
 
-	pongScoreFontFace := truetype.NewFace(pongScoreFont, &truetype.Options{
+	pongScoreFontFace = truetype.NewFace(pongScoreFont, &truetype.Options{
 		Size: 44,
 		DPI:  72,
 	})
+}
 
-	// Initialize the game
-	gameStage = 1
-
-	// Initialize the players
+func initializePlayers() {
 	player1 = Player{
 		Score:         0,
 		BouncerHeight: 50,
@@ -487,6 +482,20 @@ func main() {
 		Color:     color.RGBA{200, 200, 200, 255},
 	}
 	player2.TextScore.PositionX = (screenWidth / 2) + 70
+}
+
+func main() {
+	ebiten.SetWindowSize(screenWidth*2, screenHeight*2)
+	ebiten.SetWindowTitle(gameTitle)
+
+	// Load fonts
+	initializeFonts()
+
+	// Initialize the game
+	gameStage = 1
+
+	// Initialize the players
+	initializePlayers()
 
 	// Initialize the ball
 	if rand.Intn(2) == 0 {
